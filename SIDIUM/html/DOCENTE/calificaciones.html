@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificaciones - Sistema de Gestión Académica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #4CAF50;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .main-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow-x: auto; /* Permitir desplazamiento horizontal en la tabla */
+            display: block; /* Hacer que la tabla se comporte como un contenedor */
+            max-width: 100%; /* Limitar el ancho máximo */
+            white-space: nowrap; /* Prevenir la ruptura de línea */
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        .table-container {
+            overflow-x: auto; /* Permitir desplazamiento horizontal en la tabla */
+            margin-top: 20px; /* Espacio superior */
+            border: 1px solid #ddd; /* Borde alrededor de la tabla */
+            border-radius: 5px; /* Bordes redondeados */
+            background-color: white; /* Fondo blanco para la tabla */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Sistema de Gestión Académica</h1>
+        <h2>Bienvenido, Docente</h2>
+    </header>
+
+    <nav>
+        <a href="docentes.html" onclick="redirectTo('docentes.html');">inicio</a>
+        <a href="asistencias.html" onclick="redirectTo('asistencia.html');">Asistencia</a>
+        <a href="calificaciones.html" onclick="redirectTo('calificaciones.html');">Calificaciones</a>
+        <a href="calendario.html" onclick="redirectTo('calendario.html');">Calendario Escolar</a>
+        <a href="modificacion_califi_docente.html" onclick="redirectTo('solicitud_modificar_calificaciones.html');">Solicitud para Modificar Calificaciones</a>
+    </nav>
+
+    <div class="container">
+        <main class="main-content">
+            <h3>Registro de Calificaciones</h3>
+
+            <h4>Asignatura: Matemáticas</h4>
+            <h4>Clave de Asignatura: MAT101</h4>
+
+            <div class="table-container">
+                <table id="gradesTable">
+                    <thead>
+                        <tr>
+                            <th>Matricula</th>
+                            <th>Nombre</th>
+                            <th>Calificación Parcial 1</th>
+                            <th>Calificación Parcial 2</th>
+                            <th>Calificación Final</th>
+                            <th>Modificar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" placeholder="123456" disabled /></td>
+                            <td><input type="text" placeholder="Juan Pérez" disabled /></td>
+                            <td><input type="number" placeholder="0-100" /></td>
+                            <td><input type="number" placeholder="0-100" /></td>
+                            <td><input type="number" placeholder="0-100" /></td>
+                            <td>
+                                <button onclick="modifyGrades(this)">Modificar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" placeholder="123457" disabled /></td>
+                            <td><input type="text" placeholder="María López" disabled /></td>
+                            <td><input type="number" placeholder="0-100" /></td>
+                            <td><input type="number" placeholder="0-100" /></td>
+                            <td><input type="number" placeholder="0-100" /></td>
+                            <td>
+                                <button onclick="modifyGrades(this)">Modificar</button>
+                            </td>
+                        </tr>
+                        <!-- Agrega más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Sistema de Gestión Académica. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Función para redirigir a otras páginas
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+
+        // Función para modificar calificaciones
+        function modifyGrades(button) {
+            const row = button.closest('tr');
+            const inputs = row.querySelectorAll('input[type="number"]');
+            let canModify = true;
+
+            inputs.forEach(input => {
+                if (input.value !== "") {
+                    input.setAttribute("disabled", "disabled");
+                } else {
+                    canModify = false;
+                }
+            });
+
+            if (canModify) {
+                alert("Las calificaciones han sido actualizadas.");
+            } else {
+                alert("Por favor, completa todas las calificaciones antes de modificar.");
+            }
+        }
+    </script>
+</body>
+
+</html>

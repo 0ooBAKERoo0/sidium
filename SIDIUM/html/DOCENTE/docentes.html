@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz Docente - Sistema de Gestión Académica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #4CAF50;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .main-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-section img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 2px solid #4CAF50;
+        }
+
+        .notification-area {
+            background-color: #fff3cd;
+            padding: 15px;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .free-hours-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .free-hours-button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Sistema de Gestión Académica</h1>
+        <h2>Bienvenido, Docente</h2>
+    </header>
+
+    <nav>
+        <a href="docentes.html" onclick="redirectTo('docentes.html');">inicio</a>
+        <a href="asistencias.html" onclick="redirectTo('asistencia.html');">Asistencia</a>
+        <a href="calificaciones.html" onclick="redirectTo('calificaciones.html');">Calificaciones</a>
+        <a href="calendario.html" onclick="redirectTo('calendario.html');">Calendario Escolar</a>
+        <a href="modificacion_califi_docente.html" onclick="redirectTo('solicitud_modificar_calificaciones.html');">Solicitud para Modificar Calificaciones</a>
+    </nav>
+
+    <div class="container">
+        <main class="main-content">
+            <h3>Interfaz Docente</h3>
+
+            <div class="profile-section">
+                <img id="profile-image" src="default-avatar.jpg" alt="Fotografía del Docente" />
+                <div>
+                    <h4>Nombre del Docente</h4>
+                    <button class="free-hours-button" onclick="showFreeHours()">Ver Horas Libres</button>
+                </div>
+            </div>
+
+            <div class="notification-area" id="notifications">
+                <strong>Notificaciones:</strong>
+                <p>No tienes nuevas notificaciones.</p>
+            </div>
+
+            <h4>Carrera y Grupo</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Carrera</th>
+                        <th>Grupo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ingeniería en Sistemas</td>
+                        <td>3A</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Sistema de Gestión Académica. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Función para redirigir a otras páginas
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+
+        // Mostrar horas libres (simulado)
+        function showFreeHours() {
+            alert("Tus horas libres son:\n\nLunes: 10:00 - 12:00\nMartes: 14:00 - 16:00\nMiércoles: 11:00 - 12:30");
+        }
+
+        // Simulación de carga de notificaciones
+        function loadNotifications() {
+            const notificationsDiv = document.getElementById('notifications');
+            notificationsDiv.innerHTML = '<strong>Notificaciones:</strong><p>Tienes 2 nuevas solicitudes de los alumnos.</p>';
+        }
+
+        // Cargar notificaciones al iniciar la página
+        window.onload = loadNotifications;
+    </script>
+</body>
+
+</html>
