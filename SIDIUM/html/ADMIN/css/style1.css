@@ -20,8 +20,26 @@ header {
 
 nav {
     background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 10px;
-    text-align: center;
+    position: relative;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.bar {
+    height: 3px;
+    width: 25px;
+    background-color: white;
+    margin: 3px 0;
+    transition: 0.3s;
 }
 
 nav a {
@@ -37,10 +55,26 @@ nav a:hover {
     background-color: #4CAF50;
 }
 
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    align-items: center;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px;
+    text-align: left;
+}
+
 .container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
     padding: 20px;
 }
 
@@ -83,32 +117,26 @@ nav a:hover {
     border-radius: 8px;
 }
 
-footer {
-    text-align: center;
-    padding: 15px;
-    background-color: #4CAF50;
-    color: white;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-}
-
-@media (min-width: 768px) {
-    .container {
-        flex-direction: row; /* Cambiar la dirección del contenedor a fila en computadoras */
-    }
-    .main-content {
-        flex: 3; /* La sección principal ocupa más espacio en pantallas grandes */
-    }
-}
-
-@media (max-width: 767px) {
-    nav {
-        display: flex;
-        flex-direction: column; /* Alinear los elementos del menú en columna en pantallas pequeñas */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex; /* Mostrar menú hamburguesa en móviles */
     }
 
-    .actions button {
-        font-size: 14px; /* Reducir el tamaño del texto de los botones en pantallas más pequeñas */
+    nav a {
+        display: none; /* Ocultar links de navegación en móviles */
+    }
+
+    .dropdown-menu {
+        display: flex; /* No mostrar inicialmente */
+        flex-direction: column;
+        visibility: hidden; /* Ocultar inicialmente */
+        opacity: 0;
+        transition: visibility 0s 0.2s, opacity 0.2s; /* Agregar transición */
+    }
+
+    .dropdown-menu.show {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.2s; /* Solo mostrar */
     }
 }

@@ -140,7 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
         echo "Error: " . $conn->error;
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -149,145 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Usuarios - Sistema de Gestión Académica</title>
-
-    <style>
-        * {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-}
-
-body {
-font-family: Arial, sans-serif;
-background-color: #f4f4f4;
-color: #333;
-}
-
-header {
-background-color: #4CAF50;
-color: white;
-padding: 20px;
-text-align: center;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-nav {
-background-color: #333;
-padding: 10px;
-text-align: center;
-flex-wrap: wrap;
-}
-
-nav a {
-color: white;
-text-decoration: none;
-padding: 10px 15px;
-margin: 5px;
-border-radius: 5px;
-transition: background-color 0.3s;
-}
-
-nav a:hover {
-background-color: #4CAF50;
-}
-
-.container {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 20px;
-margin: 0 auto;
-width: 100%;
-max-width: 1200px; /* Max width for larger screens */
-}
-
-.main-content {
-background: white;
-padding: 20px;
-border-radius: 8px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-width: 100%; /* Asegurarse de que el contenido ocupe el 100% del ancho disponible */
-}
-
-h3 {
-margin-bottom: 20px;
-color: #4CAF50;
-}
-
-.user-selection {
-display: flex;
-flex-direction: column;
-gap: 15px;
-margin: 20px 0;
-}
-
-.user-selection button {
-padding: 10px;
-background-color: #007bff;
-color: white;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-transition: background-color 0.3s, transform 0.2s;
-width: 100%; /* Botones ocupan todo el ancho */
-}
-
-.user-selection button:hover {
-background-color: #0056b3;
-transform: scale(1.03);
-}
-
-.user-list {
-margin-top: 20px;
-display: flex;
-flex-direction: column;
-gap: 10px; /* Espacio entre elementos de la lista */
-}
-
-.user-list p {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 10px;
-background-color: #f9f9f9;
-border-radius: 5px;
-border: 1px solid #ddd; /* Borde para distinguir cada usuario */
-}
-
-footer {
-text-align: center;
-padding: 15px;
-background-color: #4CAF50;
-color: white;
-position: relative;
-width: 100%;
-bottom: 0;
-left: 0;
-right: 0; /* Asegurarse de que el pie de página ocupe el ancho completo */
-margin-top: 20px; /* Espacio por encima del pie de página */
-}
-
-footer p {
-margin: 0;
-}
-
-@media (min-width: 768px) {
-.user-selection {
-flex-direction: row;
-gap: 20px;
-}
-
-.user-selection button {
-flex: 1; /* Hacer que los botones se distribuyan en fila */
-}
-}
-
-/* Estilos CSS básicos */
-body { font-family: Arial, sans-serif; }
-.form-container { display: none; margin: 20px 0; } /* Ocultar formularios por defecto */
-.form-container.active { display: block; } /* Mostrar formulario activo */
-
-    </style>
+    <link rel="stylesheet" href="css/style3.css">
 </head>
 <body>
     <header>
@@ -296,10 +157,23 @@ body { font-family: Arial, sans-serif; }
     </header>
 
     <nav>
-        <a href="administrador.php">Inicio</a>
-        <a href="modificacion_calif.php">Modificar Calificaciones</a>
-        <a href="gestion_usuarios.php">Gestionar Usuarios</a>
-        <a href="gestion_asignaturas.php">Agregar Nueva Asignatura</a>
+        <div class="menu-toggle" id="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu">
+            <a href="administrador.php">Inicio</a>
+            <a href="modificacion_calif.php">Modificar Calificaciones</a>
+            <a href="gestion_usuarios.php">Gestionar Usuarios</a>
+            <a href="gestion_asignaturas.php">Agregar Nueva Asignatura</a>
+        </div>
+        <div class="desktop-menu">
+            <a href="administrador.php">Inicio</a>
+            <a href="modificacion_calif.php">Modificar Calificaciones</a>
+            <a href="gestion_usuarios.php">Gestionar Usuarios</a>
+            <a href="gestion_asignaturas.php">Agregar Nueva Asignatura</a>
+        </div>
     </nav>
 
     <div class="container">
@@ -362,42 +236,65 @@ body { font-family: Arial, sans-serif; }
                     <button type="submit" name="agregar_docente">Agregar Docente</button>
                 </form>
             </div>
-            
+
             <div class="user-list" id="user-list">
                 <?php if (isset($_GET['tipo'])): ?>
                     <?php if ($tipo == 'alumnos' && !empty($alumnos)): ?>
-                        <h4>Alumnos</h4>
+                        <h4>Alumnos por Nivel</h4>
+                        <h5>Maestría</h5>
                         <?php foreach ($alumnos as $alumno): ?>
-                            <p>
-                                <?php echo $alumno['nombre']; ?> (Grupo: <?php echo $alumno['grupo']; ?>, Carrera: <?php echo $alumno['carrera_nombre']; ?>)
-                                <span>
-                                    <button onclick="showModifyForm('alumnos', <?php echo $alumno['id']; ?>, '<?php echo addslashes($alumno['nombre']); ?>', '<?php echo addslashes($alumno['matricula']); ?>', '<?php echo addslashes($alumno['grupo']); ?>', <?php echo $alumno['carrera_id']; ?>, '<?php echo $alumno['nivel']; ?>')">Modificar</button>
-                                    <form style="display:inline;" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este alumno?');">
-                                        <input type="hidden" name="id" value="<?php echo $alumno['id']; ?>">
-                                        <input type="hidden" name="tipo_usuario" value="alumnos">
-                                        <button type="submit" name="delete_user">Eliminar</button>
-                                    </form>
-                                    <button onclick="togglePasswordVisibility('password-alumno-<?php echo $alumno['id']; ?>')">Mostrar Contraseña</button>
-                                    <span id="password-alumno-<?php echo $alumno['id']; ?>" style="display:none;"> <?php echo htmlspecialchars($alumno['password']); ?> </span> <!-- Utiliza el campo de contraseña de la base de datos -->
-                                </span>
-                            </p>
+                        <?php if ($alumno['nivel'] === 'Maestría'): ?>
+                        <p>
+                        <?php echo $alumno['nombre']; ?> (Matrícula: <?php echo $alumno['matricula']; ?>, Grupo: <?php echo $alumno['grupo']; ?>, Carrera: <?php echo $alumno['carrera_nombre']; ?>)
+                        <span>
+                        <button onclick="showModifyForm('alumnos', <?php echo $alumno['id']; ?>, '<?php echo addslashes($alumno['nombre']); ?>', '<?php echo addslashes($alumno['matricula']); ?>', '<?php echo addslashes($alumno['grupo']); ?>', <?php echo $alumno['carrera_id']; ?>, '<?php echo $alumno['nivel']; ?>')">Modificar</button>
+                        <form style="display:inline;" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este alumno?');">
+                        <input type="hidden" name="id" value="<?php echo $alumno['id']; ?>">
+                        <input type="hidden" name="tipo_usuario" value="alumnos">
+                        <button type="submit" name="delete_user">Eliminar</button>
+                        </form>
+                        <button onclick="togglePasswordVisibility('password-alumno-<?php echo $alumno['id']; ?>')">Mostrar Contraseña</button>
+                        <span id="password-alumno-<?php echo $alumno['id']; ?>" style="display:none;"> <?php echo htmlspecialchars($alumno['password']); ?> </span>
+                        </span>
+                        </p>
+                        <?php endif; ?>
                         <?php endforeach; ?>
+
+                        <h5>Doctorado</h5>
+                        <?php foreach ($alumnos as $alumno): ?>
+                        <?php if ($alumno['nivel'] === 'Doctorado'): ?>
+                        <p>
+                        <?php echo $alumno['nombre']; ?> (Matrícula: <?php echo $alumno['matricula']; ?>, Grupo: <?php echo $alumno['grupo']; ?>, Carrera: <?php echo $alumno['carrera_nombre']; ?>)
+                        <span>
+                        <button onclick="showModifyForm('alumnos', <?php echo $alumno['id']; ?>, '<?php echo addslashes($alumno['nombre']); ?>', '<?php echo addslashes($alumno['matricula']); ?>', '<?php echo addslashes($alumno['grupo']); ?>', <?php echo $alumno['carrera_id']; ?>, '<?php echo $alumno['nivel']; ?>')">Modificar</button>
+                        <form style="display:inline;" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este alumno?');">
+                        <input type="hidden" name="id" value="<?php echo $alumno['id']; ?>">
+                        <input type="hidden" name="tipo_usuario" value="alumnos">
+                        <button type="submit" name="delete_user">Eliminar</button>
+                        </form>
+                        <button onclick="togglePasswordVisibility('password-alumno-<?php echo $alumno['id']; ?>')">Mostrar Contraseña</button>
+                        <span id="password-alumno-<?php echo $alumno['id']; ?>" style="display:none;"> <?php echo htmlspecialchars($alumno['password']); ?> </span>
+                        </span>
+                        </p>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
+
                     <?php elseif ($tipo == 'docentes' && !empty($docentes)): ?>
                         <h4>Docentes</h4>
                         <?php foreach ($docentes as $docente): ?>
-                            <p>
-                                <?php echo $docente['nombre']; ?> (Materia: <?php echo $docente['materia']; ?>)
-                                <span>
-                                    <button onclick="showModifyForm('docentes', <?php echo $docente['id']; ?>, '<?php echo addslashes($docente['nombre']); ?>', '<?php echo addslashes($docente['matricula']); ?>', '<?php echo addslashes($docente['materia']); ?>')">Modificar</button>
-                                    <form style="display:inline;" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este docente?');">
-                                        <input type="hidden" name="id" value="<?php echo $docente['id']; ?>">
-                                        <input type="hidden" name="tipo_usuario" value="docentes">
-                                        <button type="submit" name="delete_user">Eliminar</button>
-                                    </form>
-                                    <button onclick="togglePasswordVisibility('password-docente-<?php echo $docente['id']; ?>')">Mostrar Contraseña</button>
-                                    <span id="password-docente-<?php echo $docente['id']; ?>" style="display:none;"> <?php echo htmlspecialchars($docente['password']); ?> </span> <!-- Utiliza el campo de contraseña de la base de datos -->
-                                </span>
-                            </p>
+                        <p>
+                        <?php echo $docente['nombre']; ?> (Matrícula: <?php echo $docente['matricula']; ?>, Materia: <?php echo $docente['materia']; ?>)
+                        <span>
+                        <button onclick="showModifyForm('docentes', <?php echo $docente['id']; ?>, '<?php echo addslashes($docente['nombre']); ?>', '<?php echo addslashes($docente['matricula']); ?>', '<?php echo addslashes($docente['materia']); ?>')">Modificar</button>
+                        <form style="display:inline;" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar a este docente?');">
+                        <input type="hidden" name="id" value="<?php echo $docente['id']; ?>">
+                        <input type="hidden" name="tipo_usuario" value="docentes">
+                        <button type="submit" name="delete_user">Eliminar</button>
+                        </form>
+                        <button onclick="togglePasswordVisibility('password-docente-<?php echo $docente['id']; ?>')">Mostrar Contraseña</button>
+                        <span id="password-docente-<?php echo $docente['id']; ?>" style="display:none;"> <?php echo htmlspecialchars($docente['password']); ?> </span>
+                        </span>
+                        </p>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>No hay registros disponibles.</p>
@@ -440,10 +337,24 @@ body { font-family: Arial, sans-serif; }
 
         function showModifyForm(userType, id, nombre, matricula, grupo = '', carreraId = '', nivel = '', materia = '') {
             // Lógica para mostrar el formulario de modificación si hace falta
-        // Ejemplo básico de implementación
-        console.log("Modificar: ", userType, id, nombre, matricula, grupo, carreraId, nivel, materia);
-        // Aquí deberías implementar la lógica para llenar el formulario con los datos del usuario seleccionado
+            // Ejemplo básico de implementación
+            console.log("Modificar: ", userType, id, nombre, matricula, grupo, carreraId, nivel, materia);
+            // Aquí deberías implementar la lógica para llenar el formulario con los datos del usuario seleccionado
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+
+            menuToggle.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('show'); // Alternar clase 'show' para mostrar u ocultar el menú
+            });
+
+            // Cerrar el menú al hacer clic en un enlace
+            dropdownMenu.addEventListener('click', function() {
+                dropdownMenu.classList.remove('show');
+            });
+        });
     </script>
 </body>
 </html>
@@ -451,6 +362,3 @@ body { font-family: Arial, sans-serif; }
 <?php
 $conn->close(); // Cerrar conexión
 ?>
-
-
-
