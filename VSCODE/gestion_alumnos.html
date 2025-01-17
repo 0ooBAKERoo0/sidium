@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Alumnos - Sistema de Gestión Académica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #4CAF50;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .main-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-button {
+            padding: 5px 10px;
+            margin: 0 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            right: 0; 
+            margin-top: 20px; 
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Sistema de Gestión Académica</h1>
+        <h2>Bienvenido, Maestro</h2>
+    </header>
+
+    <nav>
+        <a href="#" onclick="redirectTo('ver_asignaturas.html');">Ver Asignaturas</a>
+        <a href="#" onclick="redirectTo('modificar_calificaciones.html');">Modificar Calificaciones</a>
+        <a href="#" onclick="redirectTo('gestionar_usuarios.html');">Gestionar Usuarios</a>
+        <a href="#" onclick="redirectTo('agregar_asignatura.html');">Agregar Nueva Asignatura</a>
+        <a href="#" onclick="redirectTo('eliminar_usuario.html');">Eliminar Usuario</a>
+        <a href="#" onclick="redirectTo('gestionar_alumnos.html');">Gestionar Alumnos</a> 
+    </nav>
+
+    <div class="container">
+        <main class="main-content">
+            <h3>Gestión de Alumnos</h3>
+            <p>En este apartado, se muestran los alumnos dados de alta con la finalidad de tener un control en caso de que se modifiquen o eliminen datos.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Número de Celular</th>
+                        <th>Carrera</th>
+                        <th>Matrícula</th>
+                        <th>Semestre</th>
+                        <th>Contraseña</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody id="student-list">
+                    <!-- La lista de alumnos se mostrará aquí -->
+                </tbody>
+            </table>
+
+            <button onclick="addStudent()" class="action-button">Agregar Alumno</button>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Sistema de Gestión Académica. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Simulando una lista de alumnos
+        let students = [
+            { id: 1, nombre: 'Juan', apellidoPaterno: 'Pérez', apellidoMaterno: 'Lopez', celular: '555-1234', carrera: 'Ingeniería', matricula: 'A001', semestre: 1, contraseña: 'pass123' },
+            { id: 2, nombre: 'Ana', apellidoPaterno: 'Gómez', apellidoMaterno: 'Sánchez', celular: '555-5678', carrera: 'Arquitectura', matricula: 'A002', semestre: 2, contraseña: 'pass456' },
+            { id: 3, nombre: 'Luis', apellidoPaterno: 'Martínez', apellidoMaterno: 'Reyes', celular: '555-8765', carrera: 'Biología', matricula: 'A003', semestre: 3, contraseña: 'pass789' }
+        ];
+
+        // Función para redirigir a otras páginas
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+
+        // Función para mostrar la lista de alumnos
+        function showStudentList() {
+            const studentListDiv = document.getElementById('student-list');
+            studentListDiv.innerHTML = ''; // Limpiar contenido previo
+
+            // Crear la lista de alumnos
+            students.forEach(student => {
+                const studentDiv = document.createElement('tr');
+                studentDiv.innerHTML = `
+                    <td>${student.nombre}</td>
+                    <td>${student.apellidoPaterno}</td>
+                    <td>${student.apellidoMaterno}</td>
+                    <td>${student.celular}</td>
+                    <td>${student.carrera}</td>
+                    <td>${student.matricula}</td>
+                    <td>${student.semestre}</td>
+                    <td>${student.contraseña}</td>
+                    <td><button onclick="modifyStudent(${student.id})" class="action-button">Modificar</button></td>
+                    <td><button onclick="deleteStudent(${student.id})" class="action-button">Eliminar</button></td>
+                `;
+                studentListDiv.appendChild(studentDiv);
+            });
+        }
+
+        // Función para agregar un nuevo alumno (simulación simple)
+        function addStudent() {
+            const nombre = prompt("Ingrese el nombre del nuevo alumno:");
+            const apellidoPaterno = prompt("Ingrese el apellido paterno:");
+            const apellidoMaterno = prompt("Ingrese el apellido materno:");
+            const celular = prompt("Ingrese el número de celular:");
+            const carrera = prompt("Ingrese la carrera:");
+            const matricula = prompt("Ingrese la matrícula:");
+            const semestre = prompt("Ingrese el semestre:");
+            const contraseña = prompt("Ingrese la contraseña:");
+
+            if (nombre && apellidoPaterno && apellidoMaterno && celular && carrera && matricula && semestre && contraseña) {
+                const newId = students.length + 1;
+                students.push({ id: newId, nombre, apellidoPaterno, apellidoMaterno, celular, carrera, matricula, semestre, contraseña });
+                showStudentList(); // Actualizar la lista de alumnos
+            } else {
+                alert("Todos los campos son obligatorios.");
+            }
+        }
+
+        // Función para modificar datos de un alumno (simulación simple)
+        function modifyStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (student) {
+                const newNombre = prompt("Modificar nombre:", student.nombre);
+                const newApellidoPaterno = prompt("Modificar apellido paterno:", student.apellidoPaterno);
+                const newApellidoMaterno = prompt("Modificar apellido materno:", student.apellidoMaterno);
+                const newCelular = prompt("Modificar número de celular:", student.celular);
+                const newCarrera = prompt("Modificar carrera:", student.carrera);
+                const newMatricula = prompt("Modificar matrícula:", student.matricula);
+                const newSemestre = prompt("Modificar semestre:", student.semestre);
+                const newContraseña = prompt("Modificar contraseña:", student.contraseña);
+
+                if (newNombre && newApellidoPaterno && newApellidoMaterno && newCelular && newCarrera && newMatricula && newSemestre && newContraseña) {
+                    student.nombre = newNombre;
+                    student.apellidoPaterno = newApellidoPaterno;
+                    student.apellidoMaterno = newApellidoMaterno;
+                    student.celular = newCelular;
+                    student.carrera = newCarrera;
+                    student.matricula = newMatricula;
+                    student.semestre = newSemestre;
+                    student.contraseña = newContraseña;
+                    showStudentList(); // Actualizar la lista de alumnos
+                } else {
+                    alert("Todos los campos son obligatorios.");
+                }
+            }
+        }
+
+        // Función para eliminar un alumno
+        function deleteStudent(id) {
+            if (confirm("¿Estás seguro de que deseas eliminar este alumno?")) {
+                students = students.filter(student => student.id !== id);
+                showStudentList(); // Actualizar la lista de alumnos
+            }
+        }
+
+        // Cargar la lista de alumnos al iniciar la página
+        window.onload = showStudentList;
+    </script>
+</body>
+
+</html>

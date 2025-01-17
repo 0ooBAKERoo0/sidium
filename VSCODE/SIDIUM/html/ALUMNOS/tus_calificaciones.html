@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificaciones - Sistema de Gestión Académica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #4CAF50;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .main-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Sistema de Gestión Académica</h1>
+        <h2>Bienvenido, Alumno</h2>
+    </header>
+
+    <nav>
+        <a href="alumnos.html" onclick="redirectTo('inicio.html');">Inicio</a>
+        <a href="#" onclick="redirectTo('nuevo_ingreso.html');">Nuevo Ingreso</a>
+        <a href="asiatencia.html" onclick="redirectTo('asistencia.html');">Asistencia</a>
+        <a href="tus_calificaciones.html" onclick="redirectTo('calificaciones.html');">Calificaciones</a>
+        <a href="calendario_escolar.html" onclick="redirectTo('calendario.html');">Calendario Escolar</a>
+    </nav>
+
+    <div class="container">
+        <main class="main-content">
+            <h3>Tus Calificaciones</h3>
+            <p>A continuación se presenta la información sobre las asignaturas, profesores y calificaciones para cada parcial y final.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Asignatura</th>
+                        <th>Profesor</th>
+                        <th>Calificación Parcial 1</th>
+                        <th>Calificación Parcial 2</th>
+                        <th>Calificación Final</th>
+                    </tr>
+                </thead>
+                <tbody id="grades-list">
+                    <!-- La lista de calificaciones se mostrará aquí -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Sistema de Gestión Académica. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Simulando una lista de calificaciones
+        let grades = [
+            { asignatura: 'Matemáticas', profesor: 'José López', parcial1: 85, parcial2: 90, final: 88 },
+            { asignatura: 'Literatura', profesor: 'María Fernández', parcial1: 78, parcial2: 82, final: 80 },
+            { asignatura: 'Química', profesor: 'Carlos Ortega', parcial1: 92, parcial2: 95, final: 93 }
+        ];
+
+        // Función para redirigir a otras páginas
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+
+        // Función para mostrar las calificaciones
+        function showGrades() {
+            const gradesListDiv = document.getElementById('grades-list');
+            gradesListDiv.innerHTML = ''; // Limpiar contenido previo
+
+            // Crear la lista de calificaciones
+            grades.forEach(item => {
+                const gradeDiv = document.createElement('tr');
+                gradeDiv.innerHTML = `
+                    <td>${item.asignatura}</td>
+                    <td>${item.profesor}</td>
+                    <td>${item.parcial1}</td>
+                    <td>${item.parcial2}</td>
+                    <td>${item.final}</td>
+                `;
+                gradesListDiv.appendChild(gradeDiv);
+            });
+        }
+
+        // Cargar la lista de calificaciones al iniciar la página
+        window.onload = showGrades;
+    </script>
+</body>
+
+</html>
